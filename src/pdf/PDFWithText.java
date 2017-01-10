@@ -24,7 +24,7 @@ import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
 
 public class PDFWithText {
 
-    public static void test() {
+    public static void createMockPdf() {
         PDDocument doc;
         PDPage page;
 
@@ -58,7 +58,13 @@ public class PDFWithText {
     }
 
     public static void main(String[] args) {
-//        test();
+//        createMockPdf();
+//Create a file chooser
+        final JFileChooser fc = new JFileChooser();
+
+//In response to a button click:
+        int returnVal = fc.showOpenDialog(aComponent);
+
         PDDocument joined;
         PDDocument split;
         int begin = 2;
@@ -77,8 +83,7 @@ public class PDFWithText {
     }
 
     public static PDDocument join(PDDocument a, PDDocument b) throws IOException {
-        
-        
+
         PDDocument doc = new PDDocument();
         int pageNb = 1;
         PDFont font;
@@ -114,7 +119,7 @@ public class PDFWithText {
 
     public static PDDocument split(PDDocument in, int begin, int end) {
         PDDocument doc = new PDDocument();
-        
+
         for (int i = begin; i <= end && i < in.getPages().getCount(); i++) {
             doc.addPage(in.getPage(i));
         }
