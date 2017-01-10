@@ -58,7 +58,7 @@ public class PDFWithText {
     }
 
     public static void main(String[] args) {
-        test();
+//        test();
         PDDocument joined;
         PDDocument split;
         int begin = 2;
