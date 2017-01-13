@@ -5,7 +5,7 @@ package pdf;
 
 /**
  *
- * @author thomas.sauvajon, Loïc
+ * @author thomas.sauvajon, loic.thiawwingkai
  */
 import java.awt.Color;
 import java.io.File;
