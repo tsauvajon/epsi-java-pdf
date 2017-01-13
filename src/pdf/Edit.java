@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -23,7 +24,10 @@ import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
 public class Edit {
 
     public static void main(String[] args) {
+<<<<<<< Updated upstream:src/pdf/Edit.java
 //        createMockPdf();
+=======
+>>>>>>> Stashed changes:src/pdf/PDFWithText.java
         PDDocument joined;
         PDDocument split;
         int begin = 2;
