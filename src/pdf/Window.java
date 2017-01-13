@@ -29,7 +29,7 @@ public class Window {
     public static void build(){
         JFrame fenetre = new JFrame();
         //Définit un titre pour notre fenêtre
-        fenetre.setTitle("Ma première fenêtre Java");
+        fenetre.setTitle("On fait PDF ?");
         //Définit sa taille : 400 pixels de large et 100 pixels de haut
         fenetre.setSize(500, 500);
         //Nous demandons maintenant à notre objet de se positionner au centre

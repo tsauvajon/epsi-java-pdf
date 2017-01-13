@@ -9,7 +9,24 @@ package pdf;
  * @author thomas.sauvajon
  */
 public class Controller {
-    //TODO : mettre le main ici
+    public static void main(String[] args) {
+//        PDDocument joined;
+//        PDDocument split;
+//        int begin = 2;
+//        int end = 4;
+//        try {
+//            joined = join(PDDocument.load(new File("1.pdf")), PDDocument.load(new File("2.pdf")));
+//            joined.save("output.pdf");
+//            joined.close();
+//            split = split(PDDocument.load(new File("output.pdf")), begin, end);
+//            split.save("splittedpages" + (begin + 1) + "to" + (end + 1) + ".pdf");
+//            split.close();
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        Window.build();
+    }
     
     // dans le main : appel à la fonction de création de la fenêtre (contenue dans Window.java)
     // tous les appels à toutes les méthodes + gestion des événements se fait ici
