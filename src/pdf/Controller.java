@@ -37,11 +37,10 @@ public class Controller {
             int returnVal = chooser.showOpenDialog(null);
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 File chosen = chooser.getSelectedFile();
-                PDDocument document;
                 try {
-                    document = PDDocument.load(chosen);
-                    PDFRenderer pdfRenderer = new PDFRenderer(document);
-                    for (int page = 0; page < document.getNumberOfPages(); ++page)
+                    openDocument = PDDocument.load(chosen);
+                    PDFRenderer pdfRenderer = new PDFRenderer(openDocument);
+                    for (int page = 0; page < openDocument.getNumberOfPages(); ++page)
                     {
                         BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
                     }
