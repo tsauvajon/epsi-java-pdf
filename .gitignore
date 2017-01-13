@@ -20,3 +20,8 @@ genfiles.properties
 private.properties
 private.xml
 build
+*.pdf
+/*.pdf
+/*.pdf
+/*.pdf
+/*.pdf
