@@ -23,7 +23,6 @@ import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
 public class Edit {
 
     public static void main(String[] args) {
-//        createMockPdf();
         PDDocument joined;
         PDDocument split;
         int begin = 2;
