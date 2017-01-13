@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Contient toutes les méthodes d'édition du pdf
  */
 package pdf;
 
@@ -22,7 +20,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
 
-public class PDFWithText {
+public class Edit {
 
     public static void createMockPdf() {
         PDDocument doc;
@@ -72,7 +70,7 @@ public class PDFWithText {
             split.close();
 
         } catch (IOException ex) {
-            Logger.getLogger(PDFWithText.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
