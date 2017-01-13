@@ -4,10 +4,16 @@
  */
 package pdf;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 /**
  *
@@ -24,6 +30,26 @@ public class Controller {
     }
 
     public static void onClickOpenFile() {
+        JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "PDF Documents", "pdf");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(null);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                File chosen = chooser.getSelectedFile();
+                PDDocument document;
+                try {
+                    document = PDDocument.load(chosen);
+                    PDFRenderer pdfRenderer = new PDFRenderer(document);
+                    for (int page = 0; page < document.getNumberOfPages(); ++page)
+                    {
+                        BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        
         hasChanged = false;
     }
 
