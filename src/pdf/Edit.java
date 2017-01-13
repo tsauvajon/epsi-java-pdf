@@ -23,21 +23,7 @@ import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
 public class Edit {
 
     public static void main(String[] args) {
-        PDDocument joined;
-        PDDocument split;
-        int begin = 2;
-        int end = 4;
-        try {
-            joined = join(PDDocument.load(new File("1.pdf")), PDDocument.load(new File("2.pdf")));
-            joined.save("output.pdf");
-            joined.close();
-            split = split(PDDocument.load(new File("output.pdf")), begin, end);
-            split.save("splittedpages" + (begin + 1) + "to" + (end + 1) + ".pdf");
-            split.close();
-
-        } catch (IOException ex) {
-            Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Window.build();
     }
 
     public static PDDocument join(PDDocument a, PDDocument b) throws IOException {
