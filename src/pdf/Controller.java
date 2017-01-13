@@ -4,49 +4,63 @@
  */
 package pdf;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.pdfbox.pdmodel.PDDocument;
+
 /**
  *
  * @author thomas.sauvajon
  */
 public class Controller {
+
+    static PDDocument openDocument = null;
+    static boolean hasChanged = false;
+
     public static void main(String[] args) {
-//        PDDocument joined;
-//        PDDocument split;
-//        int begin = 2;
-//        int end = 4;
-//        try {
-//            joined = join(PDDocument.load(new File("1.pdf")), PDDocument.load(new File("2.pdf")));
-//            joined.save("output.pdf");
-//            joined.close();
-//            split = split(PDDocument.load(new File("output.pdf")), begin, end);
-//            split.save("splittedpages" + (begin + 1) + "to" + (end + 1) + ".pdf");
-//            split.close();
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        // création de la fenêtre
         Window.build();
     }
-    
-    public static void onClickOpenFile(){
-        
+
+    public static void onClickOpenFile() {
+        hasChanged = false;
     }
-    
-    public static void onClickCloseFile(){
-        
+
+    public static void onClickCloseFile() {
+        // TODO : fermer proprepement le documentt
+
+        openDocument = null;
     }
-    
-    public static void onClickSaveFile(){
-        
+
+    public static void onClickSaveAs() {
+        // récupérer nom fichier
+        String fileName = "";
+        try {
+            // fermer fichier en cours (pour éviter erreur d'écriture)écriture
+            
+            openDocument.save(fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    public static void onClickSplitFile(){
-        
+
+    public static void onClickSplit() {
+        if (openDocument != null) {
+            // récupérer page début
+            int startPage = 2;
+            // récupérer page fin
+            int endPage = 4;
+            openDocument = Edit.split(openDocument, startPage, endPage);
+            hasChanged = true;
+        }
     }
-    
-    public static void onClickJoinFiles(){
-        
+
+    public static void onClickJoinFiles() {
+        // récupérer document à joindre
+        PDDocument toJoin = new PDDocument();
+        openDocument = Edit.join(openDocument, toJoin);
+        hasChanged = true;
     }
-    // dans le main : appel à la fonction de création de la fenêtre (contenue dans Window.java)
     // tous les appels à toutes les méthodes + gestion des événements se fait ici
 }

@@ -12,7 +12,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 
 public class Edit {
-    public static PDDocument join(PDDocument a, PDDocument b) throws IOException {
+    public static PDDocument join(PDDocument a, PDDocument b) {
 
         PDDocument doc = new PDDocument();
 //        int pageNb = 1;
