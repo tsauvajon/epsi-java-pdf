@@ -22,39 +22,6 @@ import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
 
 public class Edit {
 
-    public static void createMockPdf() {
-        PDDocument doc;
-        PDPage page;
-
-        try {
-            doc = new PDDocument();
-            page = new PDPage();
-
-            doc.addPage(page);
-            PDFont font;
-            Encoding ec = Encoding.getInstance(COSName.WIN_ANSI_ENCODING);
-            font = PDTrueTypeFont.load(doc, new File("Roboto-Regular.ttf"), ec);
-
-            PDPageContentStream content;
-            content = new PDPageContentStream(doc, page);
-            content.beginText();
-            content.setFont(font, 12);
-            content.showText("BONJOUR !");
-            content.endText();
-            content.setNonStrokingColor(Color.PINK);
-            content.setStrokingColor(Color.BLACK);
-            content.addRect(50, 50, 150, 200);
-            content.addRect(500, 500, 100, 80);
-            content.fillAndStroke();
-            content.close();
-            doc.save("PDFWithText.pdf");
-            doc.close();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-    }
-
     public static void main(String[] args) {
 //        createMockPdf();
         PDDocument joined;

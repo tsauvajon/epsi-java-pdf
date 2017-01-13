@@ -10,4 +10,7 @@ package pdf;
  */
 public class Controller {
     //TODO : mettre le main ici
+    
+    // dans le main : appel à la fonction de création de la fenêtre (contenue dans Window.java)
+    // tous les appels à toutes les méthodes + gestion des événements se fait ici
 }
