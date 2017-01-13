@@ -28,6 +28,25 @@ public class Controller {
         Window.build();
     }
     
+    public static void onClickOpenFile(){
+        
+    }
+    
+    public static void onClickCloseFile(){
+        
+    }
+    
+    public static void onClickSaveFile(){
+        
+    }
+    
+    public static void onClickSplitFile(){
+        
+    }
+    
+    public static void onClickJoinFiles(){
+        
+    }
     // dans le main : appel à la fonction de création de la fenêtre (contenue dans Window.java)
     // tous les appels à toutes les méthodes + gestion des événements se fait ici
 }
