@@ -5,6 +5,19 @@
  */
 package pdf;
 
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
+
 /**
  *
  * @author thomas.sauvajon
@@ -127,6 +140,8 @@ public class PDFWindow extends javax.swing.JFrame {
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         // TODO add your handling code here:
         // TODO : ouvrir document, afficher les images ...
+        openDocument = importFile(evt);
+        images = getImages(openDocument);
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
@@ -163,7 +178,7 @@ public class PDFWindow extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(PDFWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -172,6 +187,8 @@ public class PDFWindow extends javax.swing.JFrame {
         });
     }
 
+    private PDDocument openDocument;
+    private ArrayList<BufferedImage> images;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
@@ -185,4 +202,40 @@ public class PDFWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    PDDocument importFile(ActionEvent e) {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "PDF Documents", "pdf");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File chosen = chooser.getSelectedFile();
+            PDDocument document;
+            try {
+                document = PDDocument.load(chosen);
+                return document;
+            } catch (IOException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+
+    ArrayList<BufferedImage> getImages(PDDocument doc) {
+        PDFRenderer pdfRenderer = new PDFRenderer(doc);
+        ArrayList<BufferedImage> pdfFiles = new ArrayList();
+        try {
+            for (int page = 0; page < doc.getNumberOfPages(); ++page) {
+
+                BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);;
+                pdfFiles.add(bim);
+            }
+            doc.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return pdfFiles;
+    }
 }
