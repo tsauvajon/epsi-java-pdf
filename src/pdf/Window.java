@@ -31,14 +31,21 @@ public class Window {
         //Termine le processus lorsqu'on clique sur la croix rouge
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JMenuBar bar = new JMenuBar();
-        JMenuItem item = new JMenuItem("Ouvrir");
+        JMenuItem open = new JMenuItem("Ouvrir");
+        JMenuItem close = new JMenuItem("Fermer");
+        JMenuItem quit = new JMenuItem("Quitter");
         JMenu menu = new JMenu("Fichier");
-        menu.add(item);
+        menu.add(open);
+        menu.add(close);
+        menu.add(quit);
         bar.add(menu);
         Controller ctrl = new Controller();
-        item.addActionListener((ActionEvent e) -> {
+        open.addActionListener((ActionEvent e) -> {
             images = ctrl.importFile(e);
             displayImages(images);
+        });
+        quit.addActionListener((ActionEvent e) -> {
+            System.exit(0);
         });
         fenetre.setJMenuBar(bar);
         //Et enfin, la rendre visible        
