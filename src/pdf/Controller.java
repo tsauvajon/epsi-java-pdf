@@ -26,28 +26,6 @@ public class Controller {
     public PDDocument openDocument = null;
     public boolean hasChanged = false;
 
-    public void onClickOpenFile() {
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "PDF Documents", "pdf");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(null);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File chosen = chooser.getSelectedFile();
-            try {
-                openDocument = PDDocument.load(chosen);
-                PDFRenderer pdfRenderer = new PDFRenderer(openDocument);
-                for (int page = 0; page < openDocument.getNumberOfPages(); ++page) {
-                    BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        hasChanged = false;
-    }
-
     public void onClickCloseFile() {
         // TODO : fermer proprement le document
 
