@@ -28,14 +28,13 @@ public class Window {
         //Termine le processus lorsqu'on clique sur la croix rouge
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JMenuBar bar = new JMenuBar();
-        JMenuItem item = new JMenuItem("Nouveau");
+        JMenuItem item = new JMenuItem("Ouvrir");
         JMenu menu = new JMenu("Fichier");
         menu.add(item);
         bar.add(menu);
         Controller ctrl = new Controller();
         item.addActionListener((ActionEvent e) -> {
             ctrl.importFile(e);
-            ctrl.onClickOpenFile();
         });
         fenetre.setJMenuBar(bar);
         //Et enfin, la rendre visible        
