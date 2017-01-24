@@ -45,6 +45,7 @@ public class Window {
             displayImages(images);
         });
         quit.addActionListener((ActionEvent e) -> {
+            System.out.println(e);
             System.exit(0);
         });
         fenetre.setJMenuBar(bar);

@@ -23,8 +23,8 @@ import org.apache.pdfbox.rendering.PDFRenderer;
  */
 public class Controller {
 
-    PDDocument openDocument = null;
-    boolean hasChanged = false;
+    public PDDocument openDocument = null;
+    public boolean hasChanged = false;
 
     public void onClickOpenFile() {
         JFileChooser chooser = new JFileChooser();
