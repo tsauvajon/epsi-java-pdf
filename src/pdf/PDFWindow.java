@@ -139,9 +139,9 @@ public class PDFWindow extends javax.swing.JFrame {
 
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         // TODO add your handling code here:
-        // TODO : ouvrir document, afficher les images ...
         openDocument = importFile(evt);
         images = getImages(openDocument);
+        // todo : afficher les images
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
@@ -189,6 +189,7 @@ public class PDFWindow extends javax.swing.JFrame {
 
     private PDDocument openDocument;
     private ArrayList<BufferedImage> images;
+    boolean hasChanged = false;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
