@@ -12,9 +12,9 @@ package pdf;
 public class Window {
 //    static ArrayList<BufferedImage> images = null;
 //
-    public static void main(String[] args) {
-        PDFWindow window = new PDFWindow();
-    }
+//    public static void main(String[] args) {
+//        PDFWindow window = new PDFWindow();
+//    }
 //        JFrame fenetre = new JFrame();
 //        //Définit un titre pour notre fenêtre
 //        fenetre.setTitle("On fait PDF ?");
