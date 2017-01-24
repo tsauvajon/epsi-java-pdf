@@ -5,6 +5,8 @@
 package pdf;
 
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -16,6 +18,7 @@ import javax.swing.JMenuItem;
  */
 
 public class Window {
+    static ArrayList<BufferedImage> images = null;
 
     public static void main(String[] args) {
         JFrame fenetre = new JFrame();
@@ -34,10 +37,16 @@ public class Window {
         bar.add(menu);
         Controller ctrl = new Controller();
         item.addActionListener((ActionEvent e) -> {
-            ctrl.importFile(e);
+            images = ctrl.importFile(e);
+            displayImages(images);
         });
         fenetre.setJMenuBar(bar);
         //Et enfin, la rendre visible        
         fenetre.setVisible(true);
+    }
+    
+    static void displayImages(ArrayList<BufferedImage> images)
+    {
+        // TODO
     }
 }
