@@ -17,7 +17,7 @@ import java.io.*;
 public class JPG{
     
      //Marche avec les images de types JPG, TIFF (only G4 compression), PNG, BMP and GIF
-    public static void main(String[] args) {
+ /*   public static void main(String[] args) {
         PDDocument doc = null;
         try{
 
@@ -40,5 +40,5 @@ public class JPG{
         } catch (Exception e){
              System.out.println("Exception");
         }
-    }
+    }*/
 }
