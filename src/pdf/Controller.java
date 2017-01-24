@@ -90,7 +90,7 @@ public class Controller {
         hasChanged = true;
     }
     // tous les appels à toutes les méthodes + gestion des événements se fait ici
-    public static void importFile(ActionEvent e){
+    public void importFile(ActionEvent e){
             
             JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
