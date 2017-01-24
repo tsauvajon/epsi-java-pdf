@@ -1,4 +1,4 @@
-/**
+/*
  * 
  * Contient toutes les fonctionnalités d'entrée / sortie
  * (open, close, save...)
@@ -20,7 +20,7 @@ import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
 
 /**
  *
- * @author thomas.sauvajon
+ * @author thomas.sauvajon, loic.thiawwingkai
  */
 public class IO {
  

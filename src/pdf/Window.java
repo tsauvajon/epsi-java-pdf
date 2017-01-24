@@ -14,7 +14,7 @@ import javax.swing.JMenuItem;
 
 /**
  *
- * @author Guillaume
+ * @author Guillaume, loic.thiawwingkai
  */
 
 public class Window {

@@ -3,7 +3,7 @@
  */
 package pdf;
 
-/**
+/*
  *
  * @author thomas.sauvajon, loic.thiawwingkai
  */
