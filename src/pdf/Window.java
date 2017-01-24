@@ -16,7 +16,8 @@ import javax.swing.JMenuItem;
  */
 
 public class Window {
-    public static void build(){
+
+    public static void main(String[] args) {
         JFrame fenetre = new JFrame();
         //Définit un titre pour notre fenêtre
         fenetre.setTitle("On fait PDF ?");

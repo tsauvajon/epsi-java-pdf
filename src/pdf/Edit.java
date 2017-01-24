@@ -13,10 +13,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 
 public class Edit {
 
-    public static void main(String[] args) {
-        Window.build();
-    }
-
     public static PDDocument join(PDDocument a, PDDocument b) throws IOException {
 
         PDDocument doc = new PDDocument();

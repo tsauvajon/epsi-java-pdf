@@ -26,11 +26,6 @@ public class Controller {
     PDDocument openDocument = null;
     boolean hasChanged = false;
 
-    public static void main(String[] args) {
-        // création de la fenêtre
-        Window.build();
-    }
-
     public void onClickOpenFile() {
         JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
