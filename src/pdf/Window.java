@@ -31,14 +31,29 @@ public class Window {
         //Termine le processus lorsqu'on clique sur la croix rouge
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JMenuBar bar = new JMenuBar();
+        
+        JMenu menuFichier = new JMenu("Fichier");
+        JMenu menuEdition = new JMenu("Edition");
+        
         JMenuItem open = new JMenuItem("Ouvrir");
+        JMenuItem save = new JMenuItem("Sauvegarder");
         JMenuItem close = new JMenuItem("Fermer");
         JMenuItem quit = new JMenuItem("Quitter");
-        JMenu menu = new JMenu("Fichier");
-        menu.add(open);
-        menu.add(close);
-        menu.add(quit);
-        bar.add(menu);
+        
+        JMenuItem join = new JMenuItem("Joindre");
+        JMenuItem extract = new JMenuItem("Extraire");
+        
+        menuFichier.add(open);
+        menuFichier.add(save);
+        menuFichier.add(close);
+        menuFichier.add(quit);
+        
+        menuEdition.add(join);
+        menuEdition.add(extract);
+        
+        bar.add(menuFichier);
+        bar.add(menuEdition);
+        
         Controller ctrl = new Controller();
         open.addActionListener((ActionEvent e) -> {
             images = ctrl.importFile(e);
