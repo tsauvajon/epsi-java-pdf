@@ -31,9 +31,10 @@ public class Window {
         JMenu menu = new JMenu("Fichier");
         menu.add(item);
         bar.add(menu);
+        Controller ctrl = new Controller();
         item.addActionListener((ActionEvent e) -> {
-            Controller.importFile(e);
-            Controller.onClickOpenFile();
+            ctrl.importFile(e);
+            ctrl.onClickOpenFile();
         });
         fenetre.setJMenuBar(bar);
         //Et enfin, la rendre visible        
