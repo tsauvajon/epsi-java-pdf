@@ -40,12 +40,14 @@ public class PDFWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanelBody = new javax.swing.JPanel();
+        jButtonPreviousPage = new javax.swing.JButton();
+        jButtonNextPage = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemSave = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItemSaveAs = new javax.swing.JMenuItem();
         jMenuItemClose = new javax.swing.JMenuItem();
         jMenuItemQuit = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
@@ -54,15 +56,38 @@ public class PDFWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 815, Short.MAX_VALUE)
+        jButtonPreviousPage.setText("Page précedente");
+        jButtonPreviousPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPreviousPageActionPerformed(evt);
+            }
+        });
+
+        jButtonNextPage.setText("Page suivante");
+        jButtonNextPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNextPageActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelBodyLayout = new javax.swing.GroupLayout(jPanelBody);
+        jPanelBody.setLayout(jPanelBodyLayout);
+        jPanelBodyLayout.setHorizontalGroup(
+            jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBodyLayout.createSequentialGroup()
+                .addGap(102, 102, 102)
+                .addComponent(jButtonPreviousPage)
+                .addGap(93, 93, 93)
+                .addComponent(jButtonNextPage)
+                .addContainerGap(404, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+        jPanelBodyLayout.setVerticalGroup(
+            jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBodyLayout.createSequentialGroup()
+                .addGap(0, 420, Short.MAX_VALUE)
+                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonPreviousPage)
+                    .addComponent(jButtonNextPage)))
         );
 
         jMenuFile.setText("Fichier");
@@ -85,12 +110,22 @@ public class PDFWindow extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemSave);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Enregistrer sous ...");
-        jMenuFile.add(jMenuItem1);
+        jMenuItemSaveAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSaveAs.setText("Enregistrer sous ...");
+        jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSaveAsActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemSaveAs);
 
         jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemClose.setText("Fermer");
+        jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCloseActionPerformed(evt);
+            }
+        });
         jMenuFile.add(jMenuItemClose);
 
         jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -127,11 +162,13 @@ public class PDFWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -141,6 +178,7 @@ public class PDFWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
         openDocument = importFile(evt);
         images = getImages(openDocument);
+        //images.get(currentPage);
         // todo : afficher les images
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
@@ -155,8 +193,53 @@ public class PDFWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemExtractActionPerformed
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
-        // TODO sauver le fichier en cours
+        if (openDocument != null && openDocumentPath != null) {
+            try {
+                openDocument.save(openDocumentPath);
+            } catch (IOException ex) {
+                Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
+
+    private void jButtonPreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviousPageActionPerformed
+        if (images != null && !images.isEmpty() && currentPage > 0) {
+            currentPage--;
+            //todo : afficher image(currentPage)
+        }
+    }//GEN-LAST:event_jButtonPreviousPageActionPerformed
+
+    private void jButtonNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextPageActionPerformed
+        if (images != null && !images.isEmpty() && images.size() > currentPage + 1) {
+            currentPage++;
+            //todo : afficher image(currentPage)
+        }
+    }//GEN-LAST:event_jButtonNextPageActionPerformed
+
+    private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
+        // TODO add your handling code here:
+        if (openDocument != null) {
+            try {
+                // todo : prompt path => openDocumentPath
+                openDocument.save(openDocumentPath);
+            } catch (IOException ex) {
+                Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
+
+    private void jMenuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCloseActionPerformed
+        if (openDocument != null) {
+            try {
+                openDocument.close();
+            } catch (IOException ex) {
+                Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        openDocumentPath = null;
+        images = null;
+        // ne plus afficher d'image dans le panel
+    }//GEN-LAST:event_jMenuItemCloseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,18 +273,22 @@ public class PDFWindow extends javax.swing.JFrame {
     private PDDocument openDocument;
     private ArrayList<BufferedImage> images;
     boolean hasChanged = false;
+    int currentPage = 0;
+    String openDocumentPath;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonNextPage;
+    private javax.swing.JButton jButtonPreviousPage;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemExtract;
     private javax.swing.JMenuItem jMenuItemJoin;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemQuit;
     private javax.swing.JMenuItem jMenuItemSave;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem jMenuItemSaveAs;
+    private javax.swing.JPanel jPanelBody;
     // End of variables declaration//GEN-END:variables
 
     PDDocument importFile(ActionEvent e) {
