@@ -26,11 +26,12 @@ public class Controller {
     PDDocument openDocument = null;
     boolean hasChanged = false;
 
-    public void onClickOpenFile() {
+    public ArrayList<BufferedImage>  importFile(ActionEvent e) {
         JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
                     "PDF Documents", "pdf");
             chooser.setFileFilter(filter);
+            ArrayList<BufferedImage> pdfFiles = new ArrayList();
             int returnVal = chooser.showOpenDialog(null);
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 File chosen = chooser.getSelectedFile();
@@ -40,13 +41,14 @@ public class Controller {
                     for (int page = 0; page < openDocument.getNumberOfPages(); ++page)
                     {
                         BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
+                        pdfFiles.add(bim);
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        
         hasChanged = false;
+        return pdfFiles;
     }
 
     public void onClickCloseFile() {
@@ -85,29 +87,4 @@ public class Controller {
         hasChanged = true;
     }
     // tous les appels à toutes les méthodes + gestion des événements se fait ici
-    public void importFile(ActionEvent e){
-            
-            JFileChooser chooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "PDF Documents", "pdf");
-            chooser.setFileFilter(filter);
-            int returnVal = chooser.showOpenDialog(null);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                File chosen = chooser.getSelectedFile();
-                PDDocument document;
-                try {
-                    document = PDDocument.load(chosen);
-                    PDFRenderer pdfRenderer = new PDFRenderer(document);
-                    ArrayList<BufferedImage> pdfFiles = new ArrayList();
-                    for (int page = 0; page < document.getNumberOfPages(); ++page)
-                    {
-                        BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-                        pdfFiles.add(bim);
-                    }
-                    document.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-    }
 }

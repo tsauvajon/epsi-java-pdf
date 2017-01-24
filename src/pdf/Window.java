@@ -35,7 +35,6 @@ public class Window {
         Controller ctrl = new Controller();
         item.addActionListener((ActionEvent e) -> {
             ctrl.importFile(e);
-            ctrl.onClickOpenFile();
         });
         fenetre.setJMenuBar(bar);
         //Et enfin, la rendre visible        
