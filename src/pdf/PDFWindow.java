@@ -32,6 +32,7 @@ public class PDFWindow extends javax.swing.JFrame {
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemSave = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItemClose = new javax.swing.JMenuItem();
         jMenuItemQuit = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
@@ -54,7 +55,7 @@ public class PDFWindow extends javax.swing.JFrame {
         jMenuFile.setText("Fichier");
 
         jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemOpen.setText("Ouvrir");
+        jMenuItemOpen.setText("Ouvrir ...");
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemOpenActionPerformed(evt);
@@ -63,8 +64,17 @@ public class PDFWindow extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemOpen);
 
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemSave.setText("Sauvegarder");
+        jMenuItemSave.setText("Enregistrer");
+        jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSaveActionPerformed(evt);
+            }
+        });
         jMenuFile.add(jMenuItemSave);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Enregistrer sous ...");
+        jMenuFile.add(jMenuItem1);
 
         jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemClose.setText("Fermer");
@@ -84,11 +94,11 @@ public class PDFWindow extends javax.swing.JFrame {
         jMenuEdit.setText("Editer");
 
         jMenuItemJoin.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemJoin.setText("Joindre");
+        jMenuItemJoin.setText("Joindre ...");
         jMenuEdit.add(jMenuItemJoin);
 
         jMenuItemExtract.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemExtract.setText("Extraire");
+        jMenuItemExtract.setText("Extraire ...");
         jMenuItemExtract.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemExtractActionPerformed(evt);
@@ -116,16 +126,22 @@ public class PDFWindow extends javax.swing.JFrame {
 
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         // TODO add your handling code here:
-        
+        // TODO : ouvrir document, afficher les images ...
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
         // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_jMenuItemQuitActionPerformed
 
     private void jMenuItemExtractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExtractActionPerformed
         // TODO add your handling code here:
+        // TODO : demander page de début, page de fin (ou nb de pages ?), le chemin de destination, puis sauver le fichier.
     }//GEN-LAST:event_jMenuItemExtractActionPerformed
+
+    private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
+        // TODO sauver le fichier en cours
+    }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -160,6 +176,7 @@ public class PDFWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemExtract;
     private javax.swing.JMenuItem jMenuItemJoin;
