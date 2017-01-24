@@ -50,7 +50,7 @@ public class Controller {
     }
 
     public void onClickCloseFile() {
-        // TODO : fermer proprepement le documentt
+        // TODO : fermer proprement le document
 
         openDocument = null;
     }
@@ -59,7 +59,7 @@ public class Controller {
         // récupérer nom fichier
         String fileName = "";
         try {
-            // fermer fichier en cours (pour éviter erreur d'écriture)écriture
+            // TODO : fermer fichier en cours (pour éviter erreur d'écriture)
             
             openDocument.save(fileName);
         } catch (IOException ex) {
@@ -79,7 +79,7 @@ public class Controller {
     }
 
     public void onClickJoinFiles() throws IOException {
-        // récupérer document à joindre
+        // TODO : récupérer document à joindre
         PDDocument toJoin = new PDDocument();
         openDocument = Edit.join(openDocument, toJoin);
         hasChanged = true;
