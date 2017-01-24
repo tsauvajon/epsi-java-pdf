@@ -16,7 +16,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
-import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 
 /**
  *
@@ -24,15 +23,15 @@ import org.apache.pdfbox.tools.imageio.ImageIOUtil;
  */
 public class Controller {
 
-    static PDDocument openDocument = null;
-    static boolean hasChanged = false;
+    PDDocument openDocument = null;
+    boolean hasChanged = false;
 
     public static void main(String[] args) {
         // création de la fenêtre
         Window.build();
     }
 
-    public static void onClickOpenFile() {
+    public void onClickOpenFile() {
         JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
                     "PDF Documents", "pdf");
@@ -55,13 +54,13 @@ public class Controller {
         hasChanged = false;
     }
 
-    public static void onClickCloseFile() {
+    public void onClickCloseFile() {
         // TODO : fermer proprepement le documentt
 
         openDocument = null;
     }
 
-    public static void onClickSaveAs() {
+    public void onClickSaveAs() {
         // récupérer nom fichier
         String fileName = "";
         try {
@@ -73,7 +72,7 @@ public class Controller {
         }
     }
 
-    public static void onClickSplit() {
+    public void onClickSplit() {
         if (openDocument != null) {
             // récupérer page début
             int startPage = 2;
@@ -84,7 +83,7 @@ public class Controller {
         }
     }
 
-    public static void onClickJoinFiles() throws IOException {
+    public void onClickJoinFiles() throws IOException {
         // récupérer document à joindre
         PDDocument toJoin = new PDDocument();
         openDocument = Edit.join(openDocument, toJoin);
