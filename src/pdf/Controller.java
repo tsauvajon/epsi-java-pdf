@@ -28,24 +28,23 @@ public class Controller {
 
     public void onClickOpenFile() {
         JFileChooser chooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "PDF Documents", "pdf");
-            chooser.setFileFilter(filter);
-            int returnVal = chooser.showOpenDialog(null);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                File chosen = chooser.getSelectedFile();
-                try {
-                    openDocument = PDDocument.load(chosen);
-                    PDFRenderer pdfRenderer = new PDFRenderer(openDocument);
-                    for (int page = 0; page < openDocument.getNumberOfPages(); ++page)
-                    {
-                        BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "PDF Documents", "pdf");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File chosen = chooser.getSelectedFile();
+            try {
+                openDocument = PDDocument.load(chosen);
+                PDFRenderer pdfRenderer = new PDFRenderer(openDocument);
+                for (int page = 0; page < openDocument.getNumberOfPages(); ++page) {
+                    BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
                 }
+            } catch (IOException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
+        }
+
         hasChanged = false;
     }
 
@@ -60,7 +59,7 @@ public class Controller {
         String fileName = "";
         try {
             // TODO : fermer fichier en cours (pour éviter erreur d'écriture)
-            
+
             openDocument.save(fileName);
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,30 +83,32 @@ public class Controller {
         openDocument = Edit.join(openDocument, toJoin);
         hasChanged = true;
     }
+
     // tous les appels à toutes les méthodes + gestion des événements se fait ici
-    public void importFile(ActionEvent e){
-            
-            JFileChooser chooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "PDF Documents", "pdf");
-            chooser.setFileFilter(filter);
-            int returnVal = chooser.showOpenDialog(null);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                File chosen = chooser.getSelectedFile();
-                PDDocument document;
-                try {
-                    document = PDDocument.load(chosen);
-                    PDFRenderer pdfRenderer = new PDFRenderer(document);
-                    ArrayList<BufferedImage> pdfFiles = new ArrayList();
-                    for (int page = 0; page < document.getNumberOfPages(); ++page)
-                    {
-                        BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-                        pdfFiles.add(bim);
-                    }
-                    document.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+    public ArrayList<BufferedImage> importFile(ActionEvent e) {
+
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "PDF Documents", "pdf");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File chosen = chooser.getSelectedFile();
+            PDDocument document;
+            try {
+                document = PDDocument.load(chosen);
+                PDFRenderer pdfRenderer = new PDFRenderer(document);
+                ArrayList<BufferedImage> pdfFiles = new ArrayList();
+                for (int page = 0; page < document.getNumberOfPages(); ++page) {
+                    BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
+                    pdfFiles.add(bim);
                 }
+                document.close();
+                return pdfFiles;
+            } catch (IOException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        return null;
     }
 }
