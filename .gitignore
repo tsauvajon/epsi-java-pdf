@@ -20,3 +20,4 @@ private.xml
 build
 *.pdf
 /*.pdf
+/nbproject/private/
