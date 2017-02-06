@@ -5,7 +5,7 @@ package pdf;
 
 /*
  *
- * @author thomas.sauvajon, loic
+ * @author thomas.sauvajon, loic.thiawwingkai
  */
 import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
