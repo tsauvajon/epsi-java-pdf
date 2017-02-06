@@ -22,7 +22,7 @@ import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
  *
  * @author thomas.sauvajon, loic.thiawwingkai
  */
-public class IO {
+public class Mock {
  
     // méthode open()
     
