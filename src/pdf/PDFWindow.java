@@ -408,7 +408,7 @@ public class PDFWindow extends javax.swing.JFrame {
                 document = PDDocument.load(chosen);
                 return document;
             } catch (IOException ex) {
-                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return null;
