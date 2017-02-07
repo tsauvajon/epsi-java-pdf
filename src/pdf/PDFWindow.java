@@ -5,6 +5,8 @@
  */
 package pdf;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
@@ -292,11 +295,21 @@ public class PDFWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
-        // TODO add your handling code here:
         openDocument = importFile(evt);
         images = getImages(openDocument);
-        //images.get(currentPage);
-        // todo : afficher les images
+        JPanel canvas = new JPanel() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(images.get(0), 0, 0, null);
+            }
+        };
+        canvas.setPreferredSize(new Dimension(images.get(0).getWidth(), images.get(0).getHeight()));
+        canvas.repaint();
+        jScrollPaneImageContainer.setViewportView(canvas);
+        jScrollPaneImageContainer.revalidate();
+        System.out.println("finished - "+images.get(0).getWidth()+' '+images.get(0).getHeight());
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
