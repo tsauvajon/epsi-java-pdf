@@ -23,7 +23,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 
 /**
  *
- * @author thomas.sauvajon
+ * @author thomas.sauvajon, loic.thiawwingkai
  */
 public class PDFWindow extends javax.swing.JFrame {
 
