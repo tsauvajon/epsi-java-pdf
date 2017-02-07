@@ -24,7 +24,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 
 /**
  *
- * @author thomas.sauvajon
+ * @author thomas.sauvajon, loic.thiawwingkai
  */
 public class PDFWindow extends javax.swing.JFrame {
 
@@ -312,6 +312,7 @@ public class PDFWindow extends javax.swing.JFrame {
         images = getImages(openDocument);
         JPanel canvas = new JPanel() {
             private static final long serialVersionUID = 1L;
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -322,7 +323,7 @@ public class PDFWindow extends javax.swing.JFrame {
         canvas.repaint();
         jScrollPaneImageContainer.setViewportView(canvas);
         jScrollPaneImageContainer.revalidate();
-        System.out.println("finished - "+images.get(0).getWidth()+' '+images.get(0).getHeight());
+        System.out.println("finished - " + images.get(0).getWidth() + ' ' + images.get(0).getHeight());
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
@@ -386,7 +387,7 @@ public class PDFWindow extends javax.swing.JFrame {
 
     private void OuvrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OuvrirActionPerformed
         // TODO add your handling code here:
-       jMenuItemOpenActionPerformed(evt);
+        jMenuItemOpenActionPerformed(evt);
     }//GEN-LAST:event_OuvrirActionPerformed
 
     private void EnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnregistrerActionPerformed
@@ -478,6 +479,7 @@ public class PDFWindow extends javax.swing.JFrame {
             PDDocument document;
             try {
                 document = PDDocument.load(chosen);
+                openDocumentPath = chosen.getPath();
                 return document;
             } catch (IOException ex) {
                 Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
@@ -491,7 +493,7 @@ public class PDFWindow extends javax.swing.JFrame {
         ArrayList<BufferedImage> pdfFiles = new ArrayList();
         try {
             for (int page = 0; page < doc.getNumberOfPages(); ++page) {
-                BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);;
+                BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
                 pdfFiles.add(bim);
             }
             doc.close();
