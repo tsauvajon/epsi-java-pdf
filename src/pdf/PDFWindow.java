@@ -53,7 +53,11 @@ public class PDFWindow extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         Ouvrir = new javax.swing.JButton();
         Enregistrer = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jButtonExtract = new javax.swing.JButton();
+        jButtonJoin = new javax.swing.JButton();
+        toPage = new javax.swing.JTextField();
+        fromPage = new javax.swing.JTextField();
+        jScrollPaneImageContainer = new javax.swing.JScrollPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -82,6 +86,7 @@ public class PDFWindow extends javax.swing.JFrame {
         });
 
         jToolBar1.setRollover(true);
+        jToolBar1.setFocusable(false);
 
         jLabel1.setText("zoom");
         jLabel1.setToolTipText("");
@@ -103,6 +108,25 @@ public class PDFWindow extends javax.swing.JFrame {
             }
         });
 
+        jButtonExtract.setText("Extraire");
+
+        jButtonJoin.setText("Joindre un autre PDF ...");
+        jButtonJoin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonJoinActionPerformed(evt);
+            }
+        });
+
+        toPage.setToolTipText("à");
+
+        fromPage.setToolTipText("De");
+        fromPage.setName(""); // NOI18N
+        fromPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromPageActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -117,7 +141,15 @@ public class PDFWindow extends javax.swing.JFrame {
                 .addComponent(Ouvrir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Enregistrer, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(837, Short.MAX_VALUE))
+                .addGap(82, 82, 82)
+                .addComponent(fromPage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(toPage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonExtract)
+                .addGap(115, 115, 115)
+                .addComponent(jButtonJoin)
+                .addContainerGap(304, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,33 +163,42 @@ public class PDFWindow extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))))
+                            .addComponent(jLabel2)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonExtract, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonJoin, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(toPage, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fromPage, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18))
         );
 
         jToolBar1.add(jPanel1);
 
+        jScrollPaneImageContainer.setEnabled(false);
+
         javax.swing.GroupLayout jPanelBodyLayout = new javax.swing.GroupLayout(jPanelBody);
         jPanelBody.setLayout(jPanelBodyLayout);
         jPanelBodyLayout.setHorizontalGroup(
             jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelBodyLayout.createSequentialGroup()
-                .addGap(102, 102, 102)
-                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelBodyLayout.createSequentialGroup()
-                        .addComponent(jButtonPreviousPage)
-                        .addGap(93, 93, 93)
-                        .addComponent(jButtonNextPage)))
+                        .addGap(102, 102, 102)
+                        .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPaneImageContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelBodyLayout.createSequentialGroup()
+                                .addComponent(jButtonPreviousPage)
+                                .addGap(93, 93, 93)
+                                .addComponent(jButtonNextPage)))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanelBodyLayout.setVerticalGroup(
             jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBodyLayout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(104, 104, 104)
+                .addComponent(jScrollPaneImageContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 575, Short.MAX_VALUE)
                 .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonPreviousPage)
@@ -320,7 +361,10 @@ public class PDFWindow extends javax.swing.JFrame {
     private void OuvrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OuvrirActionPerformed
         // TODO add your handling code here:
         openDocument = importFile(evt);
-        images = getImages(openDocument);
+        if (openDocument != null) {
+            images = getImages(openDocument);
+            jScrollPaneImageContainer.setEnabled(true);
+        }
     }//GEN-LAST:event_OuvrirActionPerformed
 
     private void EnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnregistrerActionPerformed
@@ -333,6 +377,14 @@ public class PDFWindow extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_EnregistrerActionPerformed
+
+    private void fromPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromPageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fromPageActionPerformed
+
+    private void jButtonJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonJoinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonJoinActionPerformed
 
     /**
      * @param args the command line arguments
@@ -371,6 +423,9 @@ public class PDFWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Enregistrer;
     private javax.swing.JButton Ouvrir;
+    private javax.swing.JTextField fromPage;
+    private javax.swing.JButton jButtonExtract;
+    private javax.swing.JButton jButtonJoin;
     private javax.swing.JButton jButtonNextPage;
     private javax.swing.JButton jButtonPreviousPage;
     private javax.swing.JLabel jLabel1;
@@ -389,9 +444,10 @@ public class PDFWindow extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelBody;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPaneImageContainer;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTextField toPage;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
@@ -419,7 +475,6 @@ public class PDFWindow extends javax.swing.JFrame {
         ArrayList<BufferedImage> pdfFiles = new ArrayList();
         try {
             for (int page = 0; page < doc.getNumberOfPages(); ++page) {
-
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);;
                 pdfFiles.add(bim);
             }
