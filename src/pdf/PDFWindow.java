@@ -6,13 +6,13 @@
 package pdf;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -27,12 +27,21 @@ import org.apache.pdfbox.rendering.PDFRenderer;
  * @author thomas.sauvajon, loic.thiawwingkai
  */
 public class PDFWindow extends javax.swing.JFrame {
-
+    static HashMap<Integer,Integer> offset = new HashMap();
+    static float zoom = 0.25f;
+    int currentPage = 0;
+    
     /**
      * Creates new form PDFWindow
      */
     public PDFWindow() {
         initComponents();
+        jScrollPaneImageContainer.getVerticalScrollBar().addAdjustmentListener(new java.awt.event.AdjustmentListener() {
+                @Override
+                public void adjustmentValueChanged(AdjustmentEvent e) {
+                    ScrollChanged(e);
+                }
+        });
     }
 
     /**
@@ -48,8 +57,6 @@ public class PDFWindow extends javax.swing.JFrame {
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jPopupMenu2 = new javax.swing.JPopupMenu();
         jPanelBody = new javax.swing.JPanel();
-        jButtonPreviousPage = new javax.swing.JButton();
-        jButtonNextPage = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         jScrollPaneImageContainer = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
@@ -62,6 +69,8 @@ public class PDFWindow extends javax.swing.JFrame {
         jButtonJoin = new javax.swing.JButton();
         toPage = new javax.swing.JTextField();
         fromPage = new javax.swing.JTextField();
+        jButtonPreviousPage = new javax.swing.JButton();
+        jButtonNextPage = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -74,23 +83,7 @@ public class PDFWindow extends javax.swing.JFrame {
         jMenuItemExtract = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
         setName("Fenêtre principale"); // NOI18N
-        setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
-
-        jButtonPreviousPage.setText("Page précedente");
-        jButtonPreviousPage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPreviousPageActionPerformed(evt);
-            }
-        });
-
-        jButtonNextPage.setText("Page suivante");
-        jButtonNextPage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNextPageActionPerformed(evt);
-            }
-        });
 
         jToolBar1.setRollover(true);
         jToolBar1.setFocusable(false);
@@ -150,15 +143,15 @@ public class PDFWindow extends javax.swing.JFrame {
                 .addComponent(Ouvrir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Enregistrer, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fromPage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(toPage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonExtract)
-                .addGap(115, 115, 115)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonJoin)
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,15 +186,9 @@ public class PDFWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelBodyLayout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jButtonPreviousPage)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonNextPage)))
-                .addGap(0, 51, Short.MAX_VALUE))
-            .addGroup(jPanelBodyLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPaneImageContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 1002, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
+                        .addComponent(jScrollPaneImageContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         jPanelBodyLayout.setVerticalGroup(
             jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,14 +196,24 @@ public class PDFWindow extends javax.swing.JFrame {
                 .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPaneImageContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonNextPage)
-                    .addComponent(jButtonPreviousPage))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneImageContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
+
+        jButtonPreviousPage.setText("Page précedente");
+        jButtonPreviousPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPreviousPageActionPerformed(evt);
+            }
+        });
+
+        jButtonNextPage.setText("Page suivante");
+        jButtonNextPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNextPageActionPerformed(evt);
+            }
+        });
 
         jMenuFile.setText("Fichier");
 
@@ -291,15 +288,23 @@ public class PDFWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addComponent(jButtonPreviousPage)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonNextPage))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanelBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 231, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonNextPage)
+                    .addComponent(jButtonPreviousPage))
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -310,22 +315,34 @@ public class PDFWindow extends javax.swing.JFrame {
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         openDocument = importFile(evt);
         images = getImages(openDocument);
-        JPanel canvas = new JPanel() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(images.get(0), 0, 0, null);
-            }
-        };
-        canvas.setPreferredSize(new Dimension(images.get(0).getWidth(), images.get(0).getHeight()));
-        canvas.repaint();
-        jScrollPaneImageContainer.setViewportView(canvas);
+        int nbPages = images.size();
+        int totalPagesHeight = 0;
+        int maxWidth = 0;
+        
+        JPanel canvasContainer = new JPanel();
+        
+        for(int i = 0; i < nbPages; i++){
+            PDFCanvas canvas = new PDFCanvas(images.get(i));
+            canvas.setPreferredSize(new Dimension(
+                Math.round(images.get(i).getWidth() * PDFWindow.zoom),
+                Math.round(images.get(i).getHeight() * PDFWindow.zoom)
+            ));
+            offset.put(i, Math.round(totalPagesHeight * PDFWindow.zoom) + 50 );
+            totalPagesHeight += images.get(i).getHeight();
+            maxWidth = ( maxWidth < images.get(i).getWidth() ) ? images.get(i).getWidth() : maxWidth;
+            canvas.revalidate();
+            canvasContainer.add(canvas);
+        }
+        
+        canvasContainer.setPreferredSize(new Dimension(
+                Math.round(maxWidth * PDFWindow.zoom),
+                Math.round(totalPagesHeight * PDFWindow.zoom)
+        ));
+        
+        jScrollPaneImageContainer.setViewportView(canvasContainer);
         jScrollPaneImageContainer.revalidate();
-        System.out.println("finished - " + images.get(0).getWidth() + ' ' + images.get(0).getHeight());
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
-
+    
     private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
         // TODO add your handling code here:
         System.exit(0);
@@ -349,17 +366,34 @@ public class PDFWindow extends javax.swing.JFrame {
     private void jButtonPreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviousPageActionPerformed
         if (images != null && !images.isEmpty() && currentPage > 0) {
             currentPage--;
-            //todo : afficher image(currentPage)
+            jScrollPaneImageContainer.getVerticalScrollBar().setValue(offset.get(currentPage));
         }
     }//GEN-LAST:event_jButtonPreviousPageActionPerformed
 
     private void jButtonNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextPageActionPerformed
         if (images != null && !images.isEmpty() && images.size() > currentPage + 1) {
             currentPage++;
-            //todo : afficher image(currentPage)
+            jScrollPaneImageContainer.getVerticalScrollBar().setValue(offset.get(currentPage));
         }
     }//GEN-LAST:event_jButtonNextPageActionPerformed
 
+    private void ScrollChanged(java.awt.event.AdjustmentEvent evt){
+       //Get actual offset
+        int currentOffset = evt.getAdjustable().getValue();
+        int distance = Math.abs(currentOffset - offset.get(0));
+        int index = 0;
+        for(int compteur = 1; compteur < offset.size(); compteur++){
+            int cdistance = Math.abs(currentOffset - offset.get(compteur));
+            if(cdistance < distance){
+                index = compteur;
+                distance = cdistance;
+            }else{
+                break;
+            }
+        }
+        this.currentPage = index;
+    }
+    
     private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
         // TODO add your handling code here:
         if (openDocument != null) {
@@ -385,16 +419,6 @@ public class PDFWindow extends javax.swing.JFrame {
         // ne plus afficher d'image dans le panel
     }//GEN-LAST:event_jMenuItemCloseActionPerformed
 
-    private void OuvrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OuvrirActionPerformed
-        // TODO add your handling code here:
-        jMenuItemOpenActionPerformed(evt);
-    }//GEN-LAST:event_OuvrirActionPerformed
-
-    private void EnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnregistrerActionPerformed
-        // TODO add your handling code here:
-        jMenuItemSaveActionPerformed(evt);
-    }//GEN-LAST:event_EnregistrerActionPerformed
-
     private void fromPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromPageActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fromPageActionPerformed
@@ -402,6 +426,16 @@ public class PDFWindow extends javax.swing.JFrame {
     private void jButtonJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonJoinActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonJoinActionPerformed
+
+    private void EnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnregistrerActionPerformed
+        // TODO add your handling code here:
+        jMenuItemSaveActionPerformed(evt);
+    }//GEN-LAST:event_EnregistrerActionPerformed
+
+    private void OuvrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OuvrirActionPerformed
+        // TODO add your handling code here:
+        jMenuItemOpenActionPerformed(evt);
+    }//GEN-LAST:event_OuvrirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -435,7 +469,6 @@ public class PDFWindow extends javax.swing.JFrame {
     private PDDocument openDocument;
     private ArrayList<BufferedImage> images;
     boolean hasChanged = false;
-    int currentPage = 0;
     String openDocumentPath;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Enregistrer;
