@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -36,8 +38,8 @@ public class PDFWindow extends javax.swing.JFrame {
     static float zoom = 0.25f;
     int currentPage = 0;
     int nbPages = 0;
-    
-    
+    int i = 0;
+    ArrayList<BufferedImage> pdfFiles;
     /**
      * Creates new form PDFWindow
      */
@@ -46,20 +48,24 @@ public class PDFWindow extends javax.swing.JFrame {
         jScrollPaneImageContainer.getVerticalScrollBar().addAdjustmentListener(new java.awt.event.AdjustmentListener() {
                 @Override
                 public void adjustmentValueChanged(AdjustmentEvent e) {
-                    ScrollChanged(e);
+                    if(nbPages != 0){
+                        ScrollChanged(e);
+                    }
                 }
         });
         jSpinner1.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent e) {
-                if((int)jSpinner1.getValue() < 1){
-                    jSpinner1.setValue(1);
+                if(nbPages != 0){
+                    if((int)jSpinner1.getValue() < 1){
+                        jSpinner1.setValue(1);
+                    }
+                    if((int)jSpinner1.getValue() > nbPages){
+                        jSpinner1.setValue(nbPages);
+                    }
+                    currentPage = (int) jSpinner1.getValue()-1;
+                    jScrollPaneImageContainer.getVerticalScrollBar().setValue(offset.get(currentPage));
                 }
-                if((int)jSpinner1.getValue() > nbPages){
-                    jSpinner1.setValue(nbPages);
-                }
-                currentPage = (int) jSpinner1.getValue()-1;
-                jScrollPaneImageContainer.getVerticalScrollBar().setValue(offset.get(currentPage));
             }
         });
         
@@ -122,11 +128,11 @@ public class PDFWindow extends javax.swing.JFrame {
         jLabel5.setText("Insérer après :");
 
         buttonGroup1.add(jRadioButton3);
-        jRadioButton3.setMnemonic(3);
+        jRadioButton3.setMnemonic('\u0003');
         jRadioButton3.setText("Après la page :");
 
         buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setMnemonic(2);
+        jRadioButton2.setMnemonic('\u0002');
         jRadioButton2.setSelected(true);
         jRadioButton2.setText("A la fin");
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +142,7 @@ public class PDFWindow extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setMnemonic(1);
+        jRadioButton1.setMnemonic('\u0001');
         jRadioButton1.setText("Au début");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -371,9 +377,9 @@ public class PDFWindow extends javax.swing.JFrame {
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                .addGap(32, 32, 32))
         );
 
         jButtonPreviousPage.setText("Page précedente");
@@ -490,7 +496,10 @@ public class PDFWindow extends javax.swing.JFrame {
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         openDocument = importFile(evt);
         actualFile = openDocument;
-        images = getImages(openDocument);
+        getImages(openDocument);
+    }//GEN-LAST:event_jMenuItemOpenActionPerformed
+    private void displayPage(){
+        images = pdfFiles;
         nbPages = images.size();
         int totalPagesHeight = 0;
         int maxWidth = 0;
@@ -517,11 +526,9 @@ public class PDFWindow extends javax.swing.JFrame {
                 Math.round(totalPagesHeight * PDFWindow.zoom)
         ));
         
-        jSpinner1.setValue(1);
         jScrollPaneImageContainer.setViewportView(canvasContainer);
         jScrollPaneImageContainer.revalidate();
-    }//GEN-LAST:event_jMenuItemOpenActionPerformed
-    
+    }
     private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
         // TODO add your handling code here:
         System.exit(0);
@@ -599,37 +606,6 @@ public class PDFWindow extends javax.swing.JFrame {
         // ne plus afficher d'image dans le panel
     }//GEN-LAST:event_jMenuItemCloseActionPerformed
 
-    private void jButtonJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonJoinActionPerformed
-        // TODO add your handling code here:
-        FrameJoin.setSize(new Dimension(400, 200));
-        FrameJoin.setLocation(
-                this.getWidth()/2 - FrameJoin.getWidth()/2,
-                this.getHeight()/2 - FrameJoin.getHeight()/2);
-        FrameJoin.setVisible(true);
-    }//GEN-LAST:event_jButtonJoinActionPerformed
-
-    private void EnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnregistrerActionPerformed
-        // TODO add your handling code here:
-        jMenuItemSaveActionPerformed(evt);
-    }//GEN-LAST:event_EnregistrerActionPerformed
-
-    private void OuvrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OuvrirActionPerformed
-        // TODO add your handling code here:
-        jMenuItemOpenActionPerformed(evt);
-    }//GEN-LAST:event_OuvrirActionPerformed
-
-    private void jButtonExtractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExtractActionPerformed
-        // TODO add your handling code here:
-        int from = (int) fromPage.getValue();
-        int to = (int) toPage.getValue();
-        PDDocument extract = Edit.split(actualFile, from, to);
-        try {
-            saveFile(extract);
-        } catch (IOException ex) {
-            Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButtonExtractActionPerformed
-
     private void buttonAddJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddJoinActionPerformed
         // TODO add your handling code here:
         Edit.joinDoc = importFile(evt);
@@ -664,6 +640,43 @@ public class PDFWindow extends javax.swing.JFrame {
     private void cancelJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelJoinActionPerformed
         
     }//GEN-LAST:event_cancelJoinActionPerformed
+
+    private void jButtonJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonJoinActionPerformed
+        // TODO add your handling code here:
+        FrameJoin.setSize(new Dimension(400, 250));
+        FrameJoin.setLocation(
+            this.getWidth()/2 - FrameJoin.getWidth()/2,
+            this.getHeight()/2 - FrameJoin.getHeight()/2);
+        FrameJoin.setVisible(true);
+    }//GEN-LAST:event_jButtonJoinActionPerformed
+
+    private void jButtonExtractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExtractActionPerformed
+        // TODO add your handling code here:
+        int from = (int) fromPage.getValue();
+        int to = (int) toPage.getValue();
+        PDDocument extract = Edit.split(actualFile, from, to);
+        try {
+            saveFile(extract);
+        } catch (IOException ex) {
+            Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            extract.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        FrameJoin.setVisible(false);
+    }//GEN-LAST:event_jButtonExtractActionPerformed
+
+    private void EnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnregistrerActionPerformed
+        // TODO add your handling code here:
+        jMenuItemSaveActionPerformed(evt);
+    }//GEN-LAST:event_EnregistrerActionPerformed
+
+    private void OuvrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OuvrirActionPerformed
+        // TODO add your handling code here:
+        jMenuItemOpenActionPerformed(evt);
+    }//GEN-LAST:event_OuvrirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -745,7 +758,12 @@ public class PDFWindow extends javax.swing.JFrame {
     private javax.swing.JSpinner toPage;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-
+    private void loadDisplay(int totalPages, int actualPage){
+        float coef = 100 / totalPages;
+        int percent = Math.round((actualPage + 1) * coef);
+        System.out.println(percent);
+    }
+    
     private void saveFile(PDDocument saving) throws IOException{
             String filename = "";
             String dir = "";
@@ -782,18 +800,29 @@ public class PDFWindow extends javax.swing.JFrame {
         return null;
     }
 
-    ArrayList<BufferedImage> getImages(PDDocument doc) {
+    private void getImages(PDDocument doc) {
         PDFRenderer pdfRenderer = new PDFRenderer(doc);
-        ArrayList<BufferedImage> pdfFiles = new ArrayList();
-        try {
-            for (int page = 0; page < doc.getNumberOfPages(); ++page) {
-                BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-                pdfFiles.add(bim);
+        pdfFiles = new ArrayList();
+        int numberOfPages = doc.getNumberOfPages();
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                for (int page = 0; page < numberOfPages; ++page) {
+                    BufferedImage bim;
+                    i = page;
+                    try {
+                        bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
+                        pdfFiles.add(bim);
+                    } catch (IOException ex) {
+                        Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    displayPage();
+                    try {
+                        java.lang.Thread.sleep(100);
+                    }
+                    catch(Exception e) { }
+                }
             }
-        } catch (IOException ex) {
-            Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-        return pdfFiles;
+        });
+        thread.start();
     }
 }
