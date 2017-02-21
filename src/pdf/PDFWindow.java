@@ -7,6 +7,7 @@ package pdf;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.image.BufferedImage;
@@ -45,6 +46,7 @@ public class PDFWindow extends javax.swing.JFrame {
      */
     public PDFWindow() {
         initComponents();
+        setIcon();
         jScrollPaneImageContainer.getVerticalScrollBar().addAdjustmentListener(new java.awt.event.AdjustmentListener() {
                 @Override
                 public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -643,6 +645,7 @@ public class PDFWindow extends javax.swing.JFrame {
 
     private void jButtonJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonJoinActionPerformed
         // TODO add your handling code here:
+        FrameJoin.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("favicon.png")));
         FrameJoin.setSize(new Dimension(400, 250));
         FrameJoin.setLocation(
             this.getWidth()/2 - FrameJoin.getWidth()/2,
@@ -678,6 +681,10 @@ public class PDFWindow extends javax.swing.JFrame {
         jMenuItemOpenActionPerformed(evt);
     }//GEN-LAST:event_OuvrirActionPerformed
 
+    
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("favicon.png")));
+    }
     /**
      * @param args the command line arguments
      */
@@ -825,4 +832,5 @@ public class PDFWindow extends javax.swing.JFrame {
         });
         thread.start();
     }
+
 }
