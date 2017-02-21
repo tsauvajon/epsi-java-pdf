@@ -7,22 +7,52 @@ package pdf;
  *
  * @author thomas.sauvajon, loic.thiawwingkai
  */
-import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 
 public class Edit {
+    
+    static PDDocument joinDoc = null;
+    static int JoinSelectedOption;
+    static int joinStart;
 
-    public static PDDocument join(PDDocument a, PDDocument b) throws IOException {
+    public static PDDocument join() {
 
         PDDocument doc = new PDDocument();
+        PDDocument a = PDFWindow.actualFile;
+        PDDocument b = joinDoc;
         
-        for (PDPage page : a.getPages()) {
-            doc.addPage(page);
-        }
-
-        for (PDPage page : b.getPages()) {
-            doc.addPage(page);
+        switch(JoinSelectedOption){
+            case 1 :
+                //début
+                for (PDPage page : b.getPages()) {
+                    doc.addPage(page);
+                }
+                for (PDPage page : a.getPages()) {
+                    doc.addPage(page);
+                }
+                break;
+            case 2 :
+                //fin
+                for (PDPage page : a.getPages()) {
+                    doc.addPage(page);
+                }
+                for (PDPage page : b.getPages()) {
+                    doc.addPage(page);
+                }
+                break;
+            case 3 :
+                //index
+                for(int i = 0; i < joinStart; i++){
+                    doc.addPage(a.getPage(i));
+                }
+                for (PDPage page : b.getPages()) {
+                    doc.addPage(page);
+                }
+                for(int i = joinStart; i < a.getNumberOfPages(); i++){
+                    doc.addPage(a.getPage(i));
+                }
+                break;
         }
 
         return doc;
