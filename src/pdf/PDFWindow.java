@@ -809,12 +809,12 @@ public class PDFWindow extends javax.swing.JFrame {
                     }
                 }
             }
-            try {
-                actualFile.save("HelloWORLD.pdf");
+        }
+        try {
+                saveFile(actualFile);
             } catch (IOException ex) {
                 Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
     }
     
     private void setIcon() {
