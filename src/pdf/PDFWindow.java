@@ -6,10 +6,19 @@
 package pdf;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,14 +26,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
+import javax.swing.JTextArea;
+import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -40,7 +52,9 @@ public class PDFWindow extends javax.swing.JFrame {
     int currentPage = 0;
     int nbPages = 0;
     int i = 0;
-    ArrayList<BufferedImage> pdfFiles;
+    static HashMap<Integer,JPanel> panels = new HashMap();
+    int selectedTool = 0;
+    int dragging = 0;
     /**
      * Creates new form PDFWindow
      */
@@ -114,6 +128,8 @@ public class PDFWindow extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jButtonPreviousPage = new javax.swing.JButton();
         jButtonNextPage = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -349,6 +365,20 @@ public class PDFWindow extends javax.swing.JFrame {
 
         jLabel4.setText("/ "+nbPages);
 
+        jButton1.setText("Add Text");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Save Changes");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelBodyLayout = new javax.swing.GroupLayout(jPanelBody);
         jPanelBody.setLayout(jPanelBodyLayout);
         jPanelBodyLayout.setHorizontalGroup(
@@ -366,7 +396,12 @@ public class PDFWindow extends javax.swing.JFrame {
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4))
-                    .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelBodyLayout.createSequentialGroup()
+                        .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelBodyLayout.setVerticalGroup(
@@ -379,9 +414,17 @@ public class PDFWindow extends javax.swing.JFrame {
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
-                .addGap(32, 32, 32))
+                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelBodyLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                        .addGap(32, 32, 32))
+                    .addGroup(jPanelBodyLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jButtonPreviousPage.setText("Page précedente");
@@ -501,13 +544,12 @@ public class PDFWindow extends javax.swing.JFrame {
         getImages(openDocument);
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
     private void displayPage(){
-        images = pdfFiles;
         nbPages = images.size();
         int totalPagesHeight = 0;
         int maxWidth = 0;
         jLabel4.setText("/ "+String.valueOf(nbPages));
         
-        
+        SpringLayout layout = new SpringLayout();
         JPanel canvasContainer = new JPanel();
         canvasContainer.setBackground(new Color(80,80,80));
         for(int i = 0; i < nbPages; i++){
@@ -517,6 +559,8 @@ public class PDFWindow extends javax.swing.JFrame {
                 Math.round(images.get(i).getHeight() * PDFWindow.zoom)
             ));
             offset.put(i, Math.round(totalPagesHeight * PDFWindow.zoom) + 50 );
+            canvas.setLayout(layout);
+            panels.put(i,canvas);
             totalPagesHeight += images.get(i).getHeight();
             maxWidth = ( maxWidth < images.get(i).getWidth() ) ? images.get(i).getWidth() : maxWidth;
             canvas.revalidate();
@@ -681,6 +725,97 @@ public class PDFWindow extends javax.swing.JFrame {
         jMenuItemOpenActionPerformed(evt);
     }//GEN-LAST:event_OuvrirActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        TextAdd textArea = new TextAdd();
+        textArea.setOpaque(false);
+        textArea.setBackground(new Color(0,0,0,0));
+        textArea.setBorder(BorderFactory.createLineBorder(Color.black));
+        GraphicsEnvironment ge = GraphicsEnvironment.
+                    getLocalGraphicsEnvironment();
+        String[] fonts = ge.getAvailableFontFamilyNames();
+        Font font = new Font("Times New Roman", Font.PLAIN, 12);
+        textArea.setFont(font);
+        textArea.setSize(20, 100);
+        SpringLayout layout = (SpringLayout) panels.get(currentPage).getLayout();
+                layout.putConstraint(SpringLayout.WEST, textArea,
+                     0,
+                     SpringLayout.WEST, panels.get(currentPage));
+                layout.putConstraint(SpringLayout.NORTH, textArea,
+                     0,
+                     SpringLayout.NORTH, panels.get(currentPage));
+        /*textArea.addMouseMotionListener(new MouseMotionListener(){
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                System.out.println(e);
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                System.out.println(e);
+            }
+        });*/
+        textArea.addMouseListener(new MouseListener(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                textArea.prevPosX = e.getX();
+                textArea.prevPosY = e.getY();
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                textArea.newPosX = e.getX();
+                textArea.newPosY = e.getY();
+                if(textArea.newPosX - textArea.prevPosX != 0 && textArea.newPosY - textArea.prevPosY != 0){
+                    textArea.setLocation(textArea.getLocation().x + textArea.newPosX - textArea.prevPosX, textArea.getLocation().y + textArea.newPosY - textArea.prevPosY);
+                    textArea.newPosX = textArea.getLocation().x;
+                    textArea.newPosY = textArea.getLocation().y;
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+        panels.get(currentPage).add(textArea);
+        panels.get(currentPage).revalidate();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        buildPDF();
+    }//GEN-LAST:event_jButton2ActionPerformed
+    
+    private void buildPDF(){
+        for(int index = 0; index < panels.size(); index++){
+            Component[] addingComponent = panels.get(index).getComponents();
+            for(Component cmp : addingComponent){
+                if("pdf.TextAdd".equals(cmp.getClass().getName())){
+                    TextAdd cmpToAdd = (TextAdd) cmp;
+                    String text = cmpToAdd.getText();
+                    try {
+                        Edit.addText(
+                                actualFile,
+                                index,
+                                cmpToAdd.getLocation().x,
+                                cmpToAdd.getLocation().y + cmpToAdd.getHeight() / 2,
+                                text
+                        );
+                    } catch (IOException ex) {
+                        Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            try {
+                actualFile.save("HelloWORLD.pdf");
+            } catch (IOException ex) {
+                Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("favicon.png")));
@@ -728,6 +863,8 @@ public class PDFWindow extends javax.swing.JFrame {
     private javax.swing.JButton cancelJoin;
     private javax.swing.JTextField fileUrlJoin;
     private javax.swing.JSpinner fromPage;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonExtract;
     private javax.swing.JButton jButtonJoin;
     private javax.swing.JButton jButtonNextPage;
@@ -809,8 +946,9 @@ public class PDFWindow extends javax.swing.JFrame {
 
     private void getImages(PDDocument doc) {
         PDFRenderer pdfRenderer = new PDFRenderer(doc);
-        pdfFiles = new ArrayList();
+        images = new ArrayList();
         int numberOfPages = doc.getNumberOfPages();
+        
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 for (int page = 0; page < numberOfPages; ++page) {
@@ -818,7 +956,7 @@ public class PDFWindow extends javax.swing.JFrame {
                     i = page;
                     try {
                         bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-                        pdfFiles.add(bim);
+                        images.add(bim);
                     } catch (IOException ex) {
                         Logger.getLogger(PDFWindow.class.getName()).log(Level.SEVERE, null, ex);
                     }

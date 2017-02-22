@@ -7,8 +7,12 @@ package pdf;
  *
  * @author thomas.sauvajon, loic.thiawwingkai
  */
+import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 public class Edit {
     
@@ -66,5 +70,23 @@ public class Edit {
         }
 
         return doc;
+    }
+    
+    public static PDDocument addText(PDDocument in, int begin, int xPos, int yPos, String text) throws IOException{
+        // Start a new content stream which will "hold" the to be created content
+        System.out.println(xPos + ":" + yPos);
+        PDPageContentStream contentStream = new PDPageContentStream(in, in.getPage(begin), PDPageContentStream.AppendMode.APPEND, false, true);
+        PDFont font = PDType1Font.TIMES_ROMAN;
+        // Define a text content stream using the selected font, moving the cursor and drawing the text "Hello World"
+        contentStream.beginText();
+        contentStream.setFont( font, 12 );
+        contentStream.newLineAtOffset(xPos, in.getPage(begin).getBBox().getHeight() - yPos);
+        contentStream.showText(text);
+        contentStream.endText();
+        
+        // Make sure that the content stream is closed:
+        contentStream.close();
+        
+        return in;
     }
 }
