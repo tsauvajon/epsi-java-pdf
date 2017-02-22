@@ -124,7 +124,6 @@ public class PDFWindow extends javax.swing.JFrame {
         toPage = new javax.swing.JSpinner();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jScrollPaneImageContainer = new javax.swing.JScrollPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
         jLabel3 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
@@ -356,8 +355,7 @@ public class PDFWindow extends javax.swing.JFrame {
 
         jScrollPaneImageContainer.setBackground(new java.awt.Color(80, 80, 80));
         jScrollPaneImageContainer.setEnabled(false);
-        jTabbedPane2.addTab("tab1", jScrollPaneImageContainer);
-        jTabbedPane2.addTab("tab2", jScrollPane1);
+        jTabbedPane2.addTab("PDF", jScrollPaneImageContainer);
 
         jLabel3.setText("Page :");
 
@@ -365,14 +363,14 @@ public class PDFWindow extends javax.swing.JFrame {
 
         jLabel4.setText("/ "+nbPages);
 
-        jButton1.setText("Add Text");
+        jButton1.setText("Ajouter du texte");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Save Changes");
+        jButton2.setText("Enregistrer");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -399,9 +397,9 @@ public class PDFWindow extends javax.swing.JFrame {
                     .addGroup(jPanelBodyLayout.createSequentialGroup()
                         .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))))
+                        .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelBodyLayout.setVerticalGroup(
@@ -892,7 +890,6 @@ public class PDFWindow extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPaneImageContainer;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JSpinner jSpinner1;
