@@ -30,5 +30,6 @@ public class TextAdd extends JTextArea{
                      SpringLayout.NORTH, panels.get(1));
        this.setLocation(newPosX, newPosY);
        super.paint(g);
+       this.setLocation(newPosX, newPosY);
     }
 }
